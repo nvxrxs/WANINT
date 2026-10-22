@@ -77,52 +77,7 @@
         /* ==========================================================================
            3. パスワード認証モーダル
            ========================================================================== */
-        #auth-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.85);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .auth-box {
-            background: #222;
-            width: 200px;
-            padding: 20px;
-            border-radius: 20px;
-            border: 3px solid #555;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
-            box-sizing: border-box;
-        }
-        .auth-box h2 {
-            font-size: 12px;
-            margin: 0 0 20px 0;
-            color: #fff;
-            text-shadow: none;
-        }
-        .auth-input {
-            width: 100%;
-            font-size: 10px;
-            padding: 5px 7.5px;
-            border-radius: 8px;
-            border: 2px solid #ccc;
-            text-align: center;
-            outline: none;
-            box-sizing: border-box;
-        }
-        .auth-error {
-            color: #ff4d4d;
-            margin-top: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            text-shadow: none;
-        }
+
         /* ==========================================================================
            4. UIレイヤー（共通設定）
            ========================================================================== */
@@ -535,14 +490,11 @@
             [GAME_STATES.CLEAR]:       { video: "media/bg-clear.mp4", poster: "media/bg-clear.jpg", loop: true }
         };
         
-        const TARGET_HASH = "5817ae4948371f9b6b7d94615c0704e6a13ba5a773938351ebd832d0fcdbdf2f";
-        
         // ==========================================================================
         // 2. グローバル変数（システム状態管理）
         // ==========================================================================
         let currentState = GAME_STATES.TITLE;
         let currentMediaVideo = null;
-        let isAuthenticated = true;
         let isAnimating = false;
         let currentGenreIndex = 0;
         let selectedGenre = "";
@@ -576,13 +528,6 @@
                     document.msExitFullscreen();
                 }
             }
-        }
-        
-        async function sha256(str) {
-            const buff = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-            return Array.from(new Uint8Array(buff))
-                .map(b => b.toString(16).padStart(2, "0"))
-                .join("");
         }
         
         async function fetchQuestions() {
@@ -948,26 +893,10 @@
             }
         }
         
-        function handleAnswerSubmit(userChoice) {
-            clearQuizTimers();
-            const side = userChoice.toUpperCase() === "A" ? "L" : "R";
-            let isCorrect = false;
-            if (!currentQuestion || !currentQuestion.answer) {
-                isCorrect = true;
-            } else if (userChoice.toUpperCase() === currentQuestion.answer.toUpperCase()) {
-                isCorrect = true;
-            }
-            lastAnswerSide = side;
-            lastAnswerCorrect = isCorrect;
-            questionCount++;
-            changeState(GAME_STATES.PROGRESS);
-        }
-
         // ==========================================================================
         // 5. イベントリスナー（キーボード入力制御）
         // ==========================================================================
         document.addEventListener("keydown", (e) => {
-            if (!isAuthenticated) return;
             if (e.code === "KeyF" || e.key === "f" || e.key === "F") {
                 e.preventDefault();
                 toggleFullScreen();
@@ -1111,20 +1040,10 @@
                     changeState(GAME_STATES.GAMEOVER);
                 }
             });
-            const passInput = document.getElementById("pass-input");
-            if (passInput) passInput.focus();
         });
     </script>
 </head>
 <body>
-    <div id="auth-modal">
-        <div class="auth-box" class="hidden">
-            <div class="auth-box">
-                <h2>PASSWORD</h2>
-                <input type="password" id="pass-input" class="auth-input" placeholder="パスワードを入力" onkeydown="handleAuthSubmit(event)">
-            <div id="auth-error" class="auth-error"></div>
-        </div>
-    </div>
     <!-- 暗転用黒カーテンオーバーレイ -->
     <div id="black-curtain"></div>
     <!-- 常時右下に表示するロゴ画像 -->
