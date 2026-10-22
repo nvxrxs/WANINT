@@ -348,12 +348,12 @@
             box-sizing: border-box;
         }
         .option-label {
-            font-size: 4vh;
+            font-size: 5vh;
             font-weight: bold;
             margin-bottom: 1vh;
         }
         .option-text {
-            font-size: 4.5vh;
+            font-size: 6vh;
             font-weight: bold;
             text-align: center;
             width: 100%;
@@ -363,7 +363,7 @@
         }
         .option-img {
             max-width: 100%;
-            max-height: 18vh;
+            max-height: 23vh;
             object-fit: contain;
             border-radius: 1vh;
         }
@@ -1165,9 +1165,8 @@
         <video id="bg-video" class="bg-media" autoplay muted playsinline></video>
     </div>
     <div id="ui-title" class="ui-layer hidden">
-        <p class="fullscreen-guide">[ F ]: 全画面表示</p>
         <img src="media/TrimmedLogo.png" alt="WANINT" class="title-logo">
-        <p class="start-msg">PRESS ENTER TO START</p>
+        <p class="start-msg">PRESS BUTTON TO START</p>
     </div>
     <div id="ui-genre" class="ui-layer hidden">
         <h2 class="section-title">SELECT GENRE</h2>
@@ -1176,7 +1175,7 @@
             <div class="select-card card-right">VIVANT</div>
             <div class="select-card card-third">雑学</div>
         </div>
-        <p class="key-guide">[ SPACE ]: 選択移動 / [ ENTER ]: 決定</p>
+        <p class="key-guide">選択移動 / 決定</p>
     </div>
     <div id="ui-difficulty" class="ui-layer hidden">
         <h2 class="section-title">SELECT DIFFICULTY</h2>
@@ -1184,7 +1183,7 @@
             <div class="select-card card-left">EASY</div>
             <div class="select-card card-right">HARD</div>
         </div>
-        <p class="key-guide">[ SPACE ]: 左を選択 / [ ENTER ]: 右を選択</p>
+        <p class="key-guide">左を選択 / 右を選択</p>
     </div>
     <div id="ui-question" class="ui-layer hidden">
         <div class="quiz-container">
@@ -1194,12 +1193,12 @@
             <div id="quiz-countdown" class="quiz-countdown"></div>
             <div id="quiz-options" class="quiz-options-container">
                 <div class="quiz-option-card card-left">
-                    <span class="option-label">A [ SPACE ]</span>
-                    <span id="opt-a-text" class="option-text">選択肢 A</span>
+                    <span class="option-label">A</span>
+                    <span id="opt-a-text" class="option-text">A</span>
                 </div>
                 <div class="quiz-option-card card-right">
-                    <span class="option-label">B [ ENTER ]</span>
-                    <span id="opt-b-text" class="option-text">選択肢 B</span>
+                    <span class="option-label">B</span>
+                    <span id="opt-b-text" class="option-text">B</span>
                 </div>
             </div>
             <!-- 本家準拠クリア問題インジケーター（画面左下） -->
@@ -1214,7 +1213,7 @@
     </div>
     <div id="ui-gameover" class="ui-layer hidden">
         <h1 class="gameover-title">GAME OVER</h1>
-        <p class="start-msg">PRESS ENTER TO TITLE</p>
+        <p class="start-msg">PRESS BUTTON TO TITLE</p>
     </div>
     <div id="ui-clear" class="ui-layer hidden">
         <h1 class="clear-title">CLEARED</h1>
