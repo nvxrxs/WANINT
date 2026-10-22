@@ -12,18 +12,15 @@
             --color-left: #065f46; /* 枠線・ラベル文字色 */
             --bg-left: rgba(236, 253, 245, 0.75); /* 背景色 */
             --glow-left: rgba(77, 255, 166, 0.8); /* 選択時の発光色 */
-
             /* 右側・中央カード（B / HARD / 選択肢B）の設定 */
             --color-right: #1d4ed8; /* 枠線・ラベル文字色 */
             --bg-right: rgba(239, 246, 255, 0.75); /* 背景色 */
             --glow-right: rgba(77, 166, 255, 0.8); /* 選択時の発光色 */
-
             /* 3つ目のカード（ジャンルC）の設定 */
             --color-third: #b91c1c; /* 枠線・ラベル文字色 */
             --bg-third: rgba(254, 242, 242, 0.75); /* 背景色 */
             --glow-third: rgba(255, 99, 99, 0.8); /* 選択時の発光色 */
         }
-
         /* ==========================================================================
            1. 画面全体の基本スタイル
            ========================================================================== */
@@ -75,11 +72,7 @@
         }
         .hidden { display: none !important; }
         /* ==========================================================================
-           3. パスワード認証モーダル
-           ========================================================================== */
-
-        /* ==========================================================================
-           4. UIレイヤー（共通設定）
+           3. UIレイヤー（共通設定）
            ========================================================================== */
         .ui-layer {
             position: relative;
@@ -120,7 +113,7 @@
             pointer-events: none;
         }
         /* --------------------------------------------------------------------------
-           4-1. タイトル画面
+           3-1. タイトル画面
            -------------------------------------------------------------------------- */
         .title-logo {
             height: 25vh;
@@ -147,7 +140,7 @@
             50% { opacity: 0.2; }
         }
         /* --------------------------------------------------------------------------
-           4-2. 選択画面（ジャンル / 難易度）
+           3-2. 選択画面（ジャンル / 難易度）
            -------------------------------------------------------------------------- */
         .section-title {
             font-size: 9vh;
@@ -202,7 +195,6 @@
         #genre-cards .select-card.card-third.is-focused {
             box-shadow: 0 0 3.5vh var(--glow-third), 0 2vh 2.5vh rgba(0, 0, 0, 0.9);
         }
-
         .key-guide {
             margin-top: 5vh;
             font-size: 3vh;
@@ -210,7 +202,7 @@
             color: #eee;
         }
         /* --------------------------------------------------------------------------
-           4-3. クイズ画面スタイル & 演出アニメーション
+           3-3. クイズ画面スタイル & 演出アニメーション
            -------------------------------------------------------------------------- */
         .quiz-container {
             width: 100%;
@@ -319,7 +311,6 @@
         .card-left .option-label {
             color: var(--color-left) !important;
         }
-
         .card-right {
             border-color: var(--color-right) !important;
             background-color: var(--bg-right) !important;
@@ -327,7 +318,6 @@
         .card-right .option-label {
             color: var(--color-right) !important;
         }
-
         .card-third {
             border-color: var(--color-third) !important;
             background-color: var(--bg-third) !important;
@@ -335,9 +325,8 @@
         .card-third .option-label {
             color: var(--color-third) !important;
         }
-
         /* --------------------------------------------------------------------------
-           4-4. インジケーター・ゲームオーバー・クリア画面
+           3-4. インジケーター・ゲームオーバー・クリア画面
            -------------------------------------------------------------------------- */
         .stage-indicator {
             position: absolute;
@@ -395,9 +384,8 @@
         // 1. 定数・設定データの定義
         // ==========================================================================
         const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQbRsUm7p9ttAa6NSNEM-YIRj9Ah7iv4izikbgCemvecrlIMGMl4H80D3wljAFeFHAdFxAoySIBJCkb/pub?gid=0&single=true&output=csv";
-        
+       
         const GENRE_LIST = ["A", "B", "C"];
-
         const GAME_STATES = {
             TITLE: "TITLE",
             GENRE: "GENRE",
@@ -419,7 +407,7 @@
             GAMEOVER: "GAMEOVER",
             CLEAR: "CLEAR"
         };
-        
+       
         const MEDIA_PATHS = {
             [GAME_STATES.TITLE]:       { video: "media/bg-title.mp4", poster: "media/bg-title.JPG", loop: true },
             [GAME_STATES.GENRE]:       { video: "media/bg-title.mp4", poster: "media/bg-title.JPG", loop: true },
@@ -489,7 +477,7 @@
             [GAME_STATES.GAMEOVER]:    { video: "media/bg-gameover.mov", poster: "media/bg-gameover.jpg", loop: true },
             [GAME_STATES.CLEAR]:       { video: "media/bg-clear.mp4", poster: "media/bg-clear.jpg", loop: true }
         };
-        
+       
         // ==========================================================================
         // 2. グローバル変数（システム状態管理）
         // ==========================================================================
@@ -529,7 +517,7 @@
                 }
             }
         }
-        
+       
         async function fetchQuestions() {
             try {
                 const fetchUrl = `${CSV_URL}&_t=${Date.now()}`;
@@ -540,14 +528,13 @@
                 console.error("問題データの取得に失敗しました:", error);
             }
         }
-        
+       
         function normalizeAlpha(str) {
             return str
                 .replace(/[Ａ-Ｚａ-ｚ]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0))
                 .toUpperCase()
                 .trim();
         }
-
         function parseCSV(text) {
             const lines = text.trim().split(/\r?\n/);
             questionDatabase = [];
@@ -559,8 +546,6 @@
                     const diffVal = normalizeAlpha(cols[1]);
                     const stepVal = parseInt(cols[2], 10);
                     const ansVal = normalizeAlpha(cols[6]);
-
-                    // ジャンルA〜Cの3つを識別して格納
                     if (GENRE_LIST.includes(genreVal) && !isNaN(stepVal)) {
                         questionDatabase.push({
                             genre: genreVal,
@@ -575,7 +560,7 @@
                 }
             }
         }
-        
+       
         function preloadMedia() {
             Object.values(MEDIA_PATHS).forEach(media => {
                 Object.values(media).forEach(val => {
@@ -593,7 +578,7 @@
                 });
             });
         }
-        
+       
         function playMedia(stateKey) {
             const media = MEDIA_PATHS[stateKey];
             if (!media) return;
@@ -601,7 +586,7 @@
             const videoElem = document.getElementById("bg-video");
             let posterSrc = null;
             let videoSrc = null;
-            
+           
             if (stateKey.startsWith("PROGRESS_") && stateKey !== GAME_STATES.PROGRESS_0) {
                 const branchKey = `${lastAnswerSide}_${lastAnswerCorrect ? "correct" : "wrong"}`;
                 posterSrc = media[`poster_${branchKey}`] || media.poster || null;
@@ -626,7 +611,7 @@
                     currentMediaVideo = videoSrc;
                     videoElem.classList.remove("active");
                     videoElem.src = videoSrc;
-                    
+                   
                     videoElem.onerror = showPosterFallback;
                     const playPromise = videoElem.play();
                     if (playPromise !== undefined) {
@@ -677,7 +662,7 @@
                 }
             }
         }
-        
+       
         function clearQuizTimers() {
             quizTimerIds.forEach(id => clearTimeout(id));
             quizTimerIds = [];
@@ -691,16 +676,16 @@
                 curtain.classList.remove("active");
             }
         }
-        
+       
         function showCountdown(num) {
             const countElem = document.getElementById("quiz-countdown");
             if (!countElem) return;
             countElem.textContent = num;
             countElem.classList.remove("animate-count");
-            void countElem.offsetWidth; 
+            void countElem.offsetWidth;
             countElem.classList.add("animate-count");
         }
-        
+       
         function startQuizTimers() {
             clearQuizTimers();
             const countdownValues = [5, 4, 3, 2, 1];
@@ -728,7 +713,7 @@
             }, 7000);
             quizTimerIds.push(timeoutId);
         }
-        
+       
         function animateSelection(containerId, cardSelector, selectedIndex, callback) {
             const container = document.getElementById(containerId);
             const cards = container.querySelectorAll(cardSelector);
@@ -737,10 +722,9 @@
                 return;
             }
             const selectedCard = cards[selectedIndex];
-
             let highlightColor = "#ffd700";
             let glowColor = "rgba(255, 215, 0, 0.8)";
-            
+           
             if (selectedCard.classList.contains('card-left')) {
                 highlightColor = getComputedStyle(document.documentElement).getPropertyValue('--color-left').trim();
                 glowColor = getComputedStyle(document.documentElement).getPropertyValue('--glow-left').trim();
@@ -751,8 +735,6 @@
                 highlightColor = getComputedStyle(document.documentElement).getPropertyValue('--color-third').trim();
                 glowColor = getComputedStyle(document.documentElement).getPropertyValue('--glow-third').trim();
             }
-
-            // 選択されなかった全てのカードをフェードアウト（3枚以上にも対応）
             cards.forEach((card, idx) => {
                 if (idx !== selectedIndex) {
                     card.style.transition = "opacity 0.4s ease, transform 0.4s ease";
@@ -760,7 +742,7 @@
                     card.style.transform = "scale(0.8)";
                 }
             });
-            
+           
             const rect = selectedCard.getBoundingClientRect();
             const cardCenterX = rect.left + rect.width / 2;
             const cardCenterY = rect.top + rect.height / 2;
@@ -768,7 +750,7 @@
             const screenCenterY = window.innerHeight / 2;
             const moveX = screenCenterX - cardCenterX;
             const moveY = screenCenterY - cardCenterY;
-            
+           
             selectedCard.style.transition = "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s, background-color 0.3s, box-shadow 0.3s, opacity 0.3s";
             selectedCard.style.opacity = "1";
             selectedCard.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.2)`;
@@ -776,12 +758,12 @@
             selectedCard.style.backgroundColor = "rgba(255, 255, 255, 0.35)";
             selectedCard.style.boxShadow = `0 0 3vh ${glowColor}`;
             selectedCard.style.zIndex = "20";
-            
+           
             setTimeout(() => {
                 if (callback) callback();
             }, 1200);
         }
-        
+       
         function resetCardStyles() {
             const allCards = document.querySelectorAll(".select-card, .quiz-option-card");
             allCards.forEach(card => {
@@ -794,7 +776,7 @@
                 card.style.boxShadow = "";
             });
         }
-        
+       
         function renderOptionContent(containerElem, value) {
             const imageExtensions = /\.(jpg|jpeg|png|gif|webp|svg)$/i;
             containerElem.innerHTML = "";
@@ -808,7 +790,7 @@
                 containerElem.textContent = value;
             }
         }
-        
+       
         function loadQuizData() {
             const currentStep = questionCount + 1;
             const matchingQuestions = questionDatabase.filter(q =>
@@ -830,7 +812,7 @@
             }
             updateStageIndicator();
         }
-        
+       
         function triggerQuizSequence() {
             clearQuizTimers();
             const qBox = document.querySelector(".quiz-question-box");
@@ -846,10 +828,10 @@
             }, 1550);
             setTimeout(() => {
                 isAnimating = false;
-                startQuizTimers(); 
+                startQuizTimers();
             }, 2150);
         }
-        
+       
         function changeState(newState) {
             clearQuizTimers();
             resetCardStyles();
@@ -864,7 +846,6 @@
             currentState = targetState;
             document.querySelectorAll(".ui-layer").forEach(elem => elem.classList.add("hidden"));
             playMedia(targetState);
-
             const watermark = document.getElementById("watermark-logo");
             if (watermark) {
                 if (targetState === GAME_STATES.TITLE) {
@@ -873,8 +854,8 @@
                     watermark.classList.remove("hidden");
                 }
             }
-
             if (targetState === GAME_STATES.TITLE) {
+                fetchQuestions();
                 document.getElementById("ui-title").classList.remove("hidden");
             } else if (targetState === GAME_STATES.GENRE) {
                 currentGenreIndex = 0;
@@ -892,7 +873,22 @@
                 document.getElementById("ui-clear").classList.remove("hidden");
             }
         }
-        
+
+        function handleAnswerSubmit(userChoice) {
+            clearQuizTimers();
+            const side = userChoice.toUpperCase() === "A" ? "L" : "R";
+            let isCorrect = false;
+            if (!currentQuestion || !currentQuestion.answer) {
+                isCorrect = true;
+            } else if (userChoice.toUpperCase() === currentQuestion.answer.toUpperCase()) {
+                isCorrect = true;
+            }
+            lastAnswerSide = side;
+            lastAnswerCorrect = isCorrect;
+            questionCount++;
+            changeState(GAME_STATES.PROGRESS);
+        }
+       
         // ==========================================================================
         // 5. イベントリスナー（キーボード入力制御）
         // ==========================================================================
@@ -937,11 +933,9 @@
             }
             else if (currentState === GAME_STATES.GENRE) {
                 if (e.code === "Space") {
-                    // Spaceで選択遷移（A -> B -> C -> A）
                     currentGenreIndex = (currentGenreIndex + 1) % GENRE_LIST.length;
                     updateGenreFocus();
                 } else if (e.code === "Enter") {
-                    // Enterで現在フォーカス中のジャンルを決定
                     isAnimating = true;
                     const chosenIndex = currentGenreIndex;
                     selectedGenre = GENRE_LIST[chosenIndex];
@@ -997,33 +991,12 @@
                 }
             }
         });
-        
-        async function handleAuthSubmit(e) {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                e.stopPropagation();
-                const inputVal = e.target.value;
-                const hash = await sha256(inputVal);
-                if (hash === TARGET_HASH) {
-                    document.getElementById("auth-modal").classList.add("hidden");
-                    
-                    if (document.activeElement) {
-                        document.activeElement.blur();
-                    }
-                    isAuthenticated = true;
-                    changeState(GAME_STATES.TITLE);
-                } else {
-                    document.getElementById("auth-error").textContent = "パスワードが正しくありません";
-                    e.target.value = "";
-                }
-            }
-        }
-
+       
         // ==========================================================================
         // 6. 初期化（DOM読み込み完了時）
         // ==========================================================================
         window.addEventListener("DOMContentLoaded", () => {
-            preloadMedia(); 
+            preloadMedia();
             fetchQuestions();
             changeState(GAME_STATES.TITLE);
             const videoElem = document.getElementById("bg-video");
