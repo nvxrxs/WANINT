@@ -476,10 +476,10 @@
                 poster_L_wrong:   "media/bg-progress1-L-wrong.jpg",
                 poster_R_correct: "media/bg-progress1-R-correct.jpg",
                 poster_R_wrong:   "media/bg-progress1-R-wrong.jpg",
-                video_L_correct:  "media/bg-progress1-L-correct.mp4",
-                video_L_wrong:    "media/bg-progress1-L-wrong.mp4",
-                video_R_correct:  "media/bg-progress1-R-correct.mp4",
-                video_R_wrong:    "media/bg-progress1-R-wrong.mp4"
+                video_L_correct:  "media/bg-progress1-L-correct.mov",
+                video_L_wrong:    "media/bg-progress1-L-wrong.mov",
+                video_R_correct:  "media/bg-progress1-R-correct.mov",
+                video_R_wrong:    "media/bg-progress1-R-wrong.mov"
             },
             [GAME_STATES.PROGRESS_2]:  {
                 loop: false,
@@ -487,10 +487,10 @@
                 poster_L_wrong:   "media/bg-progress2-L-wrong.jpg",
                 poster_R_correct: "media/bg-progress2-R-correct.jpg",
                 poster_R_wrong:   "media/bg-progress2-R-wrong.jpg",
-                video_L_correct:  "media/bg-progress2-L-correct.mp4",
-                video_L_wrong:    "media/bg-progress2-L-wrong.mp4",
-                video_R_correct:  "media/bg-progress2-R-correct.mp4",
-                video_R_wrong:    "media/bg-progress2-R-wrong.mp4"
+                video_L_correct:  "media/bg-progress2-L-correct.mov",
+                video_L_wrong:    "media/bg-progress2-L-wrong.mov",
+                video_R_correct:  "media/bg-progress2-R-correct.mov",
+                video_R_wrong:    "media/bg-progress2-R-wrong.mov"
             },
             [GAME_STATES.PROGRESS_3]:  {
                 loop: false,
@@ -498,10 +498,10 @@
                 poster_L_wrong:   "media/bg-progress3-L-wrong.jpg",
                 poster_R_correct: "media/bg-progress3-R-correct.jpg",
                 poster_R_wrong:   "media/bg-progress3-R-wrong.jpg",
-                video_L_correct:  "media/bg-progress3-L-correct.mp4",
-                video_L_wrong:    "media/bg-progress3-L-wrong.mp4",
-                video_R_correct:  "media/bg-progress3-R-correct.mp4",
-                video_R_wrong:    "media/bg-progress3-R-wrong.mp4"
+                video_L_correct:  "media/bg-progress3-L-correct.mov",
+                video_L_wrong:    "media/bg-progress3-L-wrong.mov",
+                video_R_correct:  "media/bg-progress3-R-correct.mov",
+                video_R_wrong:    "media/bg-progress3-R-wrong.mov"
             },
             [GAME_STATES.PROGRESS_4]:  {
                 loop: false,
@@ -509,10 +509,10 @@
                 poster_L_wrong:   "media/bg-progress4-L-wrong.jpg",
                 poster_R_correct: "media/bg-progress4-R-correct.jpg",
                 poster_R_wrong:   "media/bg-progress4-R-wrong.jpg",
-                video_L_correct:  "media/bg-progress4-L-correct.mp4",
-                video_L_wrong:    "media/bg-progress4-L-wrong.mp4",
-                video_R_correct:  "media/bg-progress4-R-correct.mp4",
-                video_R_wrong:    "media/bg-progress4-R-wrong.mp4"
+                video_L_correct:  "media/bg-progress4-L-correct.mov",
+                video_L_wrong:    "media/bg-progress4-L-wrong.mov",
+                video_R_correct:  "media/bg-progress4-R-correct.mov",
+                video_R_wrong:    "media/bg-progress4-R-wrong.mov"
             },
             [GAME_STATES.PROGRESS_5]:  {
                 loop: false,
@@ -520,18 +520,18 @@
                 poster_L_wrong:   "media/bg-progress5-L-wrong.jpg",
                 poster_R_correct: "media/bg-progress5-R-correct.jpg",
                 poster_R_wrong:   "media/bg-progress5-R-wrong.jpg",
-                video_L_correct:  "media/bg-progress5-L-correct.mp4",
-                video_L_wrong:    "media/bg-progress5-L-wrong.mp4",
-                video_R_correct:  "media/bg-progress5-R-correct.mp4",
-                video_R_wrong:    "media/bg-progress5-R-wrong.mp4"
+                video_L_correct:  "media/bg-progress5-L-correct.mov",
+                video_L_wrong:    "media/bg-progress5-L-wrong.mov",
+                video_R_correct:  "media/bg-progress5-R-correct.mov",
+                video_R_wrong:    "media/bg-progress5-R-wrong.mov"
             },
             [GAME_STATES.QUESTION_0]:  { video: "media/bg-quiz0.mp4", poster: "media/bg-quiz0.jpg", loop: true },
             [GAME_STATES.QUESTION_1]:  { video: "media/bg-quiz1.mp4", poster: "media/bg-quiz1.jpg", loop: true },
             [GAME_STATES.QUESTION_2]:  { video: "media/bg-quiz2.mp4", poster: "media/bg-quiz2.jpg", loop: true },
             [GAME_STATES.QUESTION_3]:  { video: "media/bg-quiz3.mp4", poster: "media/bg-quiz3.jpg", loop: true },
-            [GAME_STATES.QUESTION_4]:  { video: "media/bg-quiz4.mp4", poster: "media/bg-quiz4.jpg", loop: true },
-            [GAME_STATES.TIMEOUT]:     { video: "media/bg-timeout.mp4", poster: "media/bg-timeout.png", loop: false },
-            [GAME_STATES.GAMEOVER]:    { video: "media/bg-gameover.mp4", poster: "media/bg-gameover.jpg", loop: true },
+            [GAME_STATES.QUESTION_4]:  { video: "media/bg-quiz4.mp4", poster: "media/bg-quiz4.png", loop: true },
+            [GAME_STATES.TIMEOUT]:     { video: "media/bg-gameover.mov", poster: "media/bg-timeout.png", loop: false },
+            [GAME_STATES.GAMEOVER]:    { video: "media/bg-gameover.mov", poster: "media/bg-gameover.jpg", loop: true },
             [GAME_STATES.CLEAR]:       { video: "media/bg-clear.mp4", poster: "media/bg-clear.jpg", loop: true }
         };
         
@@ -542,7 +542,7 @@
         // ==========================================================================
         let currentState = GAME_STATES.TITLE;
         let currentMediaVideo = null;
-        let isAuthenticated = false;
+        let isAuthenticated = true;
         let isAnimating = false;
         let currentGenreIndex = 0;
         let selectedGenre = "";
@@ -1118,9 +1118,10 @@
 </head>
 <body>
     <div id="auth-modal">
-        <div class="auth-box">
-            <h2>PASSWORD</h2>
-            <input type="password" id="pass-input" class="auth-input" placeholder="パスワードを入力" onkeydown="handleAuthSubmit(event)">
+        <div class="auth-box" class="hidden">
+            <div class="auth-box">
+                <h2>PASSWORD</h2>
+                <input type="password" id="pass-input" class="auth-input" placeholder="パスワードを入力" onkeydown="handleAuthSubmit(event)">
             <div id="auth-error" class="auth-error"></div>
         </div>
     </div>
