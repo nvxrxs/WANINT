@@ -113,6 +113,71 @@
             z-index: 30;
             pointer-events: none;
         }
+
+        /* --------------------------------------------------------------------------
+           ★ ネプリーグ風「正解」演出スタイル
+           -------------------------------------------------------------------------- */
+        #correct-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 60;
+            pointer-events: none;
+        }
+        .correct-text {
+            font-size: 24vh;
+            font-weight: 900;
+            font-family: 'Arial Black', Impact, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            color: #fff200;
+            letter-spacing: 0.12em;
+            padding-left: 0.12em;
+            -webkit-text-stroke: 0.45vh #b30000;
+            text-shadow:
+                0 0 1.5vh #ff0000,
+                0 0 3vh #ff6600,
+                0.6vh 0.6vh 0 #b30000,
+                -0.6vh -0.6vh 0 #b30000,
+                0.6vh -0.6vh 0 #b30000,
+                -0.6vh 0.6vh 0 #b30000,
+                1vh 1vh 2vh rgba(0, 0, 0, 0.95);
+            transform: scale(0);
+            opacity: 0;
+        }
+        .correct-text.animate-nep {
+            animation: nepCorrect 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes nepCorrect {
+            0% {
+                transform: scale(3.5);
+                opacity: 0;
+            }
+            15% {
+                transform: scale(0.95);
+                opacity: 1;
+            }
+            25% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            35% {
+                transform: scale(1.0);
+                opacity: 1;
+            }
+            80% {
+                transform: scale(1.0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.25);
+                opacity: 0;
+            }
+        }
+
         /* --------------------------------------------------------------------------
            3-1. タイトル画面
            -------------------------------------------------------------------------- */
@@ -302,9 +367,7 @@
             object-fit: contain;
             border-radius: 1vh;
         }
-        /* ==========================================================================
-           ★ 各カードのカラー適用クラス
-           ========================================================================== */
+        /* 各カードのカラー適用クラス */
         .card-left {
             border-color: var(--color-left) !important;
             background-color: var(--bg-left) !important;
@@ -474,10 +537,12 @@
             [GAME_STATES.QUESTION_2]:  { video: "media/bg-quiz2.mp4", poster: "media/bg-quiz2.jpg", loop: true },
             [GAME_STATES.QUESTION_3]:  { video: "media/bg-quiz3.mp4", poster: "media/bg-quiz3.jpg", loop: true },
             [GAME_STATES.QUESTION_4]:  { video: "media/bg-quiz4.mp4", poster: "media/bg-quiz4.png", loop: true },
-            [GAME_STATES.TIMEOUT]:     { video: "media/bg-gameover.mp4", poster: "media/bg-timeout.png", loop: false },
-            [GAME_STATES.GAMEOVER]:    { video: "media/bg-gameover.mp4", poster: "media/bg-gameover.jpg", loop: false },
+            [GAME_STATES.TIMEOUT]:     { video: "media/bg-gameover.mov", poster: "media/bg-timeout.png", loop: false },
+            [GAME_STATES.GAMEOVER]:    { video: "media/bg-gameover.mov", poster: "media/bg-gameover.jpg", loop: true },
             [GAME_STATES.CLEAR]:       { video: "media/bg-clear.mp4", poster: "media/bg-clear.jpg", loop: true }
         };
+
+        const correctAudio = new Audio("media/correct.mp3");
        
         // ==========================================================================
         // 2. グローバル変数（システム状態管理）
@@ -487,6 +552,7 @@
         let isAnimating = false;
         let isGameOverReady = false;
         let gameOverTimerId = null;
+        let correctOverlayTimerId = null;
         let currentGenreIndex = 0;
         let selectedGenre = "";
         let selectedDifficulty = "";
@@ -644,6 +710,34 @@
         // ==========================================================================
         // 4. UI・クイズロジック関連関数
         // ==========================================================================
+        function showCorrectEffect() {
+            const overlay = document.getElementById("correct-overlay");
+            const textElem = document.getElementById("correct-text");
+            if (!overlay || !textElem) return;
+
+            try {
+                correctAudio.currentTime = 0;
+                correctAudio.play().catch(() => {});
+            } catch (err) {
+                console.error("正解音の再生に失敗:", err);
+            }
+
+            if (correctOverlayTimerId) {
+                clearTimeout(correctOverlayTimerId);
+            }
+
+            overlay.classList.remove("hidden");
+            textElem.classList.remove("animate-nep");
+            void textElem.offsetWidth;
+            textElem.classList.add("animate-nep");
+
+            correctOverlayTimerId = setTimeout(() => {
+                overlay.classList.add("hidden");
+                textElem.classList.remove("animate-nep");
+                correctOverlayTimerId = null;
+            }, 1800);
+        }
+
         function updateGenreFocus() {
             const genreCards = document.querySelectorAll("#genre-cards .select-card");
             genreCards.forEach((card, idx) => {
@@ -678,6 +772,14 @@
             const curtain = document.getElementById("black-curtain");
             if (curtain && currentState !== GAME_STATES.TIMEOUT) {
                 curtain.classList.remove("active");
+            }
+            const overlay = document.getElementById("correct-overlay");
+            if (overlay) {
+                overlay.classList.add("hidden");
+            }
+            if (correctOverlayTimerId) {
+                clearTimeout(correctOverlayTimerId);
+                correctOverlayTimerId = null;
             }
         }
        
@@ -856,6 +958,7 @@
             currentState = targetState;
             document.querySelectorAll(".ui-layer").forEach(elem => elem.classList.add("hidden"));
             playMedia(targetState);
+
             const watermark = document.getElementById("watermark-logo");
             if (watermark) {
                 if (targetState === GAME_STATES.TITLE) {
@@ -864,6 +967,7 @@
                     watermark.classList.remove("hidden");
                 }
             }
+
             if (targetState === GAME_STATES.TITLE) {
                 fetchQuestions();
                 document.getElementById("ui-title").classList.remove("hidden");
@@ -877,8 +981,12 @@
                 loadQuizData();
                 document.getElementById("ui-question").classList.remove("hidden");
                 triggerQuizSequence();
+            } else if (targetState.startsWith("PROGRESS_") && targetState !== GAME_STATES.PROGRESS_0) {
+                // 正解ステート時にネプリーグ風テロップと音声を再生
+                if (lastAnswerCorrect) {
+                    showCorrectEffect();
+                }
             } else if (targetState === GAME_STATES.GAMEOVER) {
-                // 映像は即座に再生開始し、文字UIの表示のみ3秒遅延させる
                 gameOverTimerId = setTimeout(() => {
                     const goUi = document.getElementById("ui-gameover");
                     if (goUi && currentState === GAME_STATES.GAMEOVER) {
@@ -1003,7 +1111,6 @@
                 }
             }
             else if (currentState === GAME_STATES.GAMEOVER) {
-                // 文字が表示されるまでの3秒間は操作を受け付けない
                 if (isGameOverReady && (e.code === "Enter" || e.code === "Space")) {
                     changeState(GAME_STATES.TITLE);
                 }
@@ -1042,6 +1149,10 @@
 <body>
     <!-- 暗転用黒カーテンオーバーレイ -->
     <div id="black-curtain"></div>
+    <!-- ネプリーグ風正解テロップオーバーレイ -->
+    <div id="correct-overlay" class="hidden">
+        <span id="correct-text" class="correct-text">正 解</span>
+    </div>
     <!-- 常時右下に表示するロゴ画像 -->
     <img src="media/TrimmedLogo.png" alt="Logo" class="watermark-logo" id="watermark-logo">
     <div class="bg-container">
@@ -1049,8 +1160,9 @@
         <video id="bg-video" class="bg-media" autoplay muted playsinline></video>
     </div>
     <div id="ui-title" class="ui-layer hidden">
+        <p class="fullscreen-guide">[ F ]: 全画面表示</p>
         <img src="media/TrimmedLogo.png" alt="WANINT" class="title-logo">
-        <p class="start-msg">PRESS BUTTON TO START</p>
+        <p class="start-msg">PRESS ENTER TO START</p>
     </div>
     <div id="ui-genre" class="ui-layer hidden">
         <h2 class="section-title">SELECT GENRE</h2>
@@ -1059,7 +1171,7 @@
             <div class="select-card card-right">VIVANT</div>
             <div class="select-card card-third">雑学</div>
         </div>
-        <p class="key-guide">選択移動 / 決定</p>
+        <p class="key-guide">[ SPACE ]: 選択移動 / [ ENTER ]: 決定</p>
     </div>
     <div id="ui-difficulty" class="ui-layer hidden">
         <h2 class="section-title">SELECT DIFFICULTY</h2>
@@ -1078,11 +1190,11 @@
             <div id="quiz-options" class="quiz-options-container">
                 <div class="quiz-option-card card-left">
                     <span class="option-label">A [ SPACE ]</span>
-                    <span id="opt-a-text" class="option-text">A</span>
+                    <span id="opt-a-text" class="option-text">選択肢 A</span>
                 </div>
                 <div class="quiz-option-card card-right">
                     <span class="option-label">B [ ENTER ]</span>
-                    <span id="opt-b-text" class="option-text">B</span>
+                    <span id="opt-b-text" class="option-text">選択肢 B</span>
                 </div>
             </div>
             <!-- 本家準拠クリア問題インジケーター（画面左下） -->
