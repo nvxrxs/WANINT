@@ -1003,14 +1003,22 @@
             videoElem.addEventListener("ended", () => {
                 if (currentState.startsWith("PROGRESS_")) {
                     if (!lastAnswerCorrect) {
-                        changeState(GAME_STATES.GAMEOVER);
+                        isAnimating = true;
+                        setTimeout(() => {
+                            isAnimating = false;
+                            changeState(GAME_STATES.GAMEOVER);
+                        }, 3000);
                     } else if (currentState === GAME_STATES.PROGRESS_5) {
                         changeState(GAME_STATES.CLEAR);
                     } else {
                         changeState(GAME_STATES.QUESTION);
                     }
                 } else if (currentState === GAME_STATES.TIMEOUT) {
-                    changeState(GAME_STATES.GAMEOVER);
+                    isAnimating = true;
+                    setTimeout(() => {
+                        isAnimating = false;
+                        changeState(GAME_STATE.GAMEOVER);
+                    }, 3000);
                 }
             });
         });
