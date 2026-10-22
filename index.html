@@ -984,7 +984,12 @@
             } else if (targetState.startsWith("PROGRESS_") && targetState !== GAME_STATES.PROGRESS_0) {
                 // 正解ステート時にネプリーグ風テロップと音声を再生
                 if (lastAnswerCorrect) {
-                    showCorrectEffect();
+                    setTimeout(() => {
+                        // 状態がまだPROGRESSのままであることを確認して発火
+                        if (currentState.startsWith("PROGRESS_")) {
+                            showCorrectEffect();
+                        }
+                    }, 5000);
                 }
             } else if (targetState === GAME_STATES.GAMEOVER) {
                 gameOverTimerId = setTimeout(() => {
