@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>WANINT</title>
     <style>
         /* ==========================================================================
@@ -25,6 +26,8 @@
            1. 画面全体の基本スタイル
            ========================================================================== */
         html, body {
+            -webkit-user-select: none;
+            outline: none;
             margin: 0;
             padding: 0;
             width: 100vw;
@@ -104,6 +107,48 @@
             opacity: 1;
         }
         .watermark-logo {
+            #correct-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                 z-index: 60;
+                pointer-events: none;
+            }
+            .correct-text {
+                font-size: 24vh;
+                font-weight: 900;
+                font-family: 'Arial Black', Impact, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+                color: #fff200;
+                letter-spacing: 0.12em;
+                padding-left: 0.12em;
+                -webkit-text-stroke: 0.45vh #b30000;
+                text-shadow:
+                    0 0 1.5vh #ff0000,
+                    0 0 3vh #ff6600,
+                    0.6vh 0.6vh 0 #b30000,
+                    -0.6vh -0.6vh 0 #b30000,
+                    0.6vh -0.6vh 0 #b30000,
+                    -0.6vh 0.6vh 0 #b30000,
+                    1vh 1vh 2vh rgba(0, 0, 0, 0.95);
+                transform: scale(0);
+                opacity: 0;
+            }
+            .correct-text.animate-nep {
+                animation: nepCorrect 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+            @keyframes nepCorrect {
+                0% { transform: scale(3.5); opacity: 0; }
+                15% { transform: scale(0.95); opacity: 1; }
+                25% { transform: scale(1.1); opacity: 1; }
+                35% { transform: scale(1.0); opacity: 1; }
+                80% { transform: scale(1.0); opacity: 1; }
+                100% { transform: scale(1.25); opacity: 0; }
+            }
             position: fixed;
             bottom: 0vh;
             right: 0vw;
@@ -473,6 +518,8 @@
         };
        
         const MEDIA_PATHS = {
+            const correctAudio = new Audio("media/correct.mp3");
+            correctAudio.preload = "auto";
             [GAME_STATES.TITLE]:       { video: "media/bg-title.mp4", poster: "media/bg-title.JPG", loop: true },
             [GAME_STATES.GENRE]:       { video: "media/bg-title.mp4", poster: "media/bg-title.JPG", loop: true },
             [GAME_STATES.DIFFICULTY]:  { video: "media/bg-title.mp4", poster: "media/bg-title.JPG", loop: true },
@@ -547,6 +594,9 @@
         // ==========================================================================
         // 2. グローバル変数（システム状態管理）
         // ==========================================================================
+        let isAudioUnlocked = false;
+        let correctOverlayTimerId = null;
+        let correctDelayTimerId = null;
         let currentState = GAME_STATES.TITLE;
         let currentMediaVideo = null;
         let isAnimating = false;
@@ -566,6 +616,39 @@
         // ==========================================================================
         // 3. ユーティリティ・システム制御関数
         // ==========================================================================
+        function unlockMediaForIOS() {
+            if (!isAudioUnlocked) {
+                correctAudio.muted = true;
+                correctAudio.play().then(() => {
+                    correctAudio.pause();
+                    correctAudio.currentTime = 0;
+                    correctAudio.muted = false;
+                    isAudioUnlocked = true;
+                }).catch(() => {
+                    correctAudio.muted = false;
+                });
+            }
+            const videoElem = document.getElementById("bg-video");
+            if (videoElem && videoElem.paused && currentMediaVideo) {
+                videoElem.play().then(() => videoElem.classList.add("active")).catch(() => {});
+            }
+        }
+
+        function isLeftKey(e) {
+            return (
+                e.code === "Space" || e.code === "ArrowLeft" || e.code === "Digit1" ||
+                e.key === " " || e.key === "ArrowLeft" || e.key === "1" ||
+                e.keyCode === 32 || e.keyCode === 37 || e.keyCode === 49
+            );
+        }
+
+        function isRightKey(e) {
+            return (
+                e.code === "Enter" || e.code === "NumpadEnter" || e.code === "ArrowRight" || e.code === "Digit2" ||
+                e.key === "Enter" || e.key === "ArrowRight" || e.key === "2" ||
+                e.keyCode === 13 || e.keyCode === 39 || e.keyCode === 50
+            );
+        }
         function toggleFullScreen() {
             if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
                 const elem = document.documentElement;
@@ -762,6 +845,16 @@
         }
        
         function clearQuizTimers() {
+            const overlay = document.getElementById("correct-overlay");
+            if (overlay) overlay.classList.add("hidden");
+            if (correctOverlayTimerId) {
+                clearTimeout(correctOverlayTimerId);
+                correctOverlayTimerId = null;
+            }
+            if (correctDelayTimerId) {
+                clearTimeout(correctDelayTimerId);
+                correctDelayTimerId = null;
+            }
             quizTimerIds.forEach(id => clearTimeout(id));
             quizTimerIds = [];
             const countElem = document.getElementById("quiz-countdown");
