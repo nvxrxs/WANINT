@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>WANINT</title>
     <style>
         /* ==========================================================================
@@ -11,19 +13,20 @@
         :root {
             /* 左側カード（A / EASY / 選択肢A）の設定 */
             --color-left: #065f46;
-            --bg-left: rgba(236, 253, 245, 0.75);
+            --bg-left: rgba(236, 253, 245, 0.85);
             --glow-left: rgba(77, 255, 166, 0.8);
             /* 右側・中央カード（B / HARD / 選択肢B）の設定 */
             --color-right: #1d4ed8;
-            --bg-right: rgba(239, 246, 255, 0.75);
+            --bg-right: rgba(239, 246, 255, 0.85);
             --glow-right: rgba(77, 166, 255, 0.8);
             /* 3つ目のカード（ジャンルC）の設定 */
             --color-third: #b91c1c;
-            --bg-third: rgba(254, 242, 242, 0.75);
+            --bg-third: rgba(254, 242, 242, 0.85);
             --glow-third: rgba(255, 99, 99, 0.8);
         }
+
         /* ==========================================================================
-           1. 画面全体の基本スタイル（スマホ・iPad最適化）
+           1. 画面全体の基本スタイル（スマホ横向き全画面・最適化）
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -39,13 +42,15 @@
             overscroll-behavior: none;
             touch-action: manipulation;
             background-color: #000;
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
             color: #fff;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-touch-callout: none;
             cursor: none;
             outline: none;
         }
+
         /* ==========================================================================
            2. 背景メディア（画像・動画）レイアウト
            ========================================================================== */
@@ -69,9 +74,8 @@
         #bg-img {
             z-index: 1;
             display: block;
-            width: 100vw;
-            height: 100vh;
-            height: 100dvh;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
         #bg-video {
@@ -83,6 +87,7 @@
             opacity: 1;
         }
         .hidden { display: none !important; }
+
         /* ==========================================================================
            3. UIレイヤー（共通設定）
            ========================================================================== */
@@ -117,14 +122,15 @@
         }
         .watermark-logo {
             position: fixed;
-            bottom: 0vh;
-            right: 0vw;
-            height: 8vh;
-            max-width: 20vw;
+            bottom: 1vh;
+            right: 1vw;
+            height: 7vh;
+            max-width: 15vw;
             object-fit: contain;
             z-index: 30;
             pointer-events: none;
         }
+
         /* --------------------------------------------------------------------------
            ★ ネプリーグ風「正解」演出スタイル
            -------------------------------------------------------------------------- */
@@ -142,7 +148,7 @@
             pointer-events: none;
         }
         .correct-text {
-            font-size: min(24vh, 35vw);
+            font-size: min(22vh, 32vw);
             font-weight: 900;
             font-family: 'Arial Black', Impact, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
             color: #fff200;
@@ -155,7 +161,7 @@
                 0.6vh 0.6vh 0 #b30000,
                 -0.6vh -0.6vh 0 #b30000,
                 0.6vh -0.6vh 0 #b30000,
-                -0.6vh 0.6vh 0 #b30000,
+                -0.6vh -0.6vh 0 #b30000,
                 1vh 1vh 2vh rgba(0, 0, 0, 0.95);
             transform: scale(0);
             opacity: 0;
@@ -171,17 +177,18 @@
             80% { transform: scale(1.0); opacity: 1; }
             100% { transform: scale(1.25); opacity: 0; }
         }
+
         /* --------------------------------------------------------------------------
            3-1. タイトル画面
            -------------------------------------------------------------------------- */
         .title-logo {
-            height: 25vh;
-            max-width: 90vw;
+            height: 30vh;
+            max-width: 85vw;
             object-fit: contain;
-            margin-bottom: 4vh;
+            margin-bottom: 3vh;
         }
         .start-msg {
-            font-size: min(4vh, 6vw);
+            font-size: min(4vh, 5.5vw);
             font-weight: bold;
             animation: blink 1.5s infinite;
         }
@@ -198,12 +205,13 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0.2; }
         }
+
         /* --------------------------------------------------------------------------
            3-2. 選択画面（ジャンル / 難易度）
            -------------------------------------------------------------------------- */
         .section-title {
-            font-size: min(9vh, 10vw);
-            margin-bottom: 5vh;
+            font-size: min(8vh, 9vw);
+            margin-bottom: 4vh;
             letter-spacing: 0.05em;
             font-weight: bold;
             text-align: center;
@@ -213,27 +221,28 @@
             gap: 3.5vw;
             justify-content: center;
             align-items: center;
-            max-width: 94vw;
+            max-width: 95vw;
         }
         .select-card {
-            width: min(45vh, 42vw);
-            height: min(45vh, 42vw);
+            width: min(42vh, 40vw);
+            height: min(42vh, 40vw);
             background: rgba(0, 0, 0, 0.65);
             border: 0.8vh solid #fff;
             border-radius: 3vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: min(10vh, 9vw);
+            font-size: min(9vh, 8.5vw);
             font-weight: bold;
             box-shadow: 0 2vh 2.5vh rgba(0, 0, 0, 0.9);
             transition: transform 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
+            cursor: pointer;
         }
-        /* ジャンル選択画面（3枚並び）用のサイズ調整とフォーカス演出 */
+        /* ジャンル選択画面（3枚並び）用 */
         #genre-cards .select-card {
-            width: min(40vh, 28vw);
-            height: min(40vh, 28vw);
-            font-size: min(8vh, 6.5vw);
+            width: min(38vh, 26vw);
+            height: min(38vh, 26vw);
+            font-size: min(7vh, 6vw);
             opacity: 0.45;
             transform: scale(0.9);
         }
@@ -252,11 +261,13 @@
             box-shadow: 0 0 3.5vh var(--glow-third), 0 2vh 2.5vh rgba(0, 0, 0, 0.9);
         }
         .key-guide {
-            margin-top: 5vh;
-            font-size: min(3vh, 4.5vw);
+            margin-top: 4vh;
+            font-size: min(2.8vh, 4vw);
             font-weight: bold;
             color: #eee;
+            text-align: center;
         }
+
         /* --------------------------------------------------------------------------
            3-3. クイズ画面スタイル & 演出アニメーション
            -------------------------------------------------------------------------- */
@@ -267,7 +278,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 5vh 5vw;
+            padding: 4vh 4vw;
             position: relative;
         }
         .quiz-question-box {
@@ -275,9 +286,9 @@
             border: 0.5vh solid #fff;
             border-radius: 2vh;
             width: 85vw;
-            padding: 3vh;
+            padding: 2.5vh;
             text-align: center;
-            font-size: min(5vh, 5.5vw);
+            font-size: min(4.5vh, 5vw);
             font-weight: bold;
             line-height: 1.4;
             box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.8);
@@ -291,11 +302,11 @@
             100% { opacity: 1; transform: scale(1); }
         }
         .quiz-countdown {
-            font-size: min(14vh, 22vw);
+            font-size: min(12vh, 18vw);
             font-weight: 900;
             color: #ff3333;
             text-shadow: 0 0 2vh rgba(255, 0, 0, 0.9), 0 0 4vh rgba(0, 0, 0, 1);
-            height: 14vh;
+            height: 12vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -313,7 +324,7 @@
             display: flex;
             justify-content: space-between;
             width: 85vw;
-            margin-bottom: 11vh;
+            margin-bottom: 8vh;
             opacity: 0;
         }
         .quiz-options-container.animate-fade {
@@ -325,7 +336,7 @@
         }
         .quiz-option-card {
             width: 39vw;
-            min-height: 24vh;
+            min-height: 22vh;
             background: rgba(0, 0, 0, 0.75);
             border: 0.6vh solid #aaa;
             border-radius: 2vh;
@@ -334,14 +345,15 @@
             justify-content: center;
             align-items: center;
             padding: 2vh;
+            cursor: pointer;
         }
         .option-label {
-            font-size: min(4vh, 4.5vw);
+            font-size: min(3.5vh, 4vw);
             font-weight: bold;
             margin-bottom: 1vh;
         }
         .option-text {
-            font-size: min(4.5vh, 5vw);
+            font-size: min(4vh, 4.5vw);
             font-weight: bold;
             text-align: center;
             width: 100%;
@@ -351,13 +363,12 @@
         }
         .option-img {
             max-width: 100%;
-            max-height: 18vh;
+            max-height: 16vh;
             object-fit: contain;
             border-radius: 1vh;
         }
-        /* ==========================================================================
-           ★ 各カードのカラー適用クラス
-           ========================================================================== */
+
+        /* 各カードのカラー適用クラス */
         .card-left {
             border-color: var(--color-left) !important;
             background-color: var(--bg-left) !important;
@@ -379,13 +390,14 @@
         .card-third .option-label {
             color: var(--color-third) !important;
         }
+
         /* --------------------------------------------------------------------------
            3-4. インジケーター・ゲームオーバー・クリア画面
            -------------------------------------------------------------------------- */
         .stage-indicator {
             position: absolute;
-            bottom: 6vh;
-            left: 0vw;
+            bottom: 4vh;
+            left: 2vw;
             display: flex;
             gap: 0.4vh;
             background: #1e1f24;
@@ -397,12 +409,12 @@
             text-shadow: none;
         }
         .stage-slot {
-            width: 5.5vh;
-            height: 5.5vh;
+            width: 5vh;
+            height: 5vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 4.2vh;
+            font-size: 3.8vh;
             font-weight: 900;
             font-family: 'Arial Black', Impact, sans-serif;
             border-radius: 0.3vh;
@@ -418,17 +430,17 @@
             text-shadow: none;
         }
         .gameover-title {
-            font-size: min(13vh, 15vw);
+            font-size: min(12vh, 14vw);
             color: #ff3333;
-            margin-bottom: 4vh;
+            margin-bottom: 3vh;
             letter-spacing: 0.08em;
             font-weight: 900;
             text-align: center;
         }
         .clear-title {
-            font-size: min(13vh, 15vw);
+            font-size: min(12vh, 14vw);
             color: #ffd700;
-            margin-bottom: 4vh;
+            margin-bottom: 3vh;
             letter-spacing: 0.08em;
             font-weight: 900;
             text-align: center;
@@ -578,7 +590,6 @@
             }
         }
 
-        // マイコン（1 / ArrowLeft / Space）の左ボタン判定
         function isLeftKey(e) {
             return (
                 e.code === "Digit1" || e.code === "Numpad1" ||
@@ -588,7 +599,6 @@
             );
         }
 
-        // マイコン（2 / ArrowRight / Enter）の右ボタン判定
         function isRightKey(e) {
             return (
                 e.code === "Digit2" || e.code === "Numpad2" ||
@@ -1018,7 +1028,6 @@
                     }, 1200);
                 }
             } else if (targetState === GAME_STATES.GAMEOVER) {
-                // 映像は即座に再生開始し、文字UIの表示のみ3秒遅延させる
                 gameOverTimerId = setTimeout(() => {
                     const goUi = document.getElementById("ui-gameover");
                     if (goUi && currentState === GAME_STATES.GAMEOVER) {
@@ -1045,20 +1054,90 @@
             questionCount++;
             changeState(GAME_STATES.PROGRESS);
         }
-       
-        // ==========================================================================
-        // 5. イベントリスナー（マイコン入力＆スマホ/iPad音声ロック解除）
-        // ==========================================================================
-        function handleGameInput(e) {
-            if (e.repeat) return;
 
+        // ==========================================================================
+        // 5. イベント共通処理（マイコン入力 ＆ 画面直接タップ対応）
+        // ==========================================================================
+        function processAction(actionType) {
+            if (isAnimating) return;
+            unlockMediaForMobile();
+
+            if (currentState === GAME_STATES.TITLE) {
+                questionCount = 0;
+                changeState(GAME_STATES.GENRE);
+            }
+            else if (currentState === GAME_STATES.GENRE) {
+                if (actionType === "left") {
+                    currentGenreIndex = (currentGenreIndex + 1) % GENRE_LIST.length;
+                    updateGenreFocus();
+                } else if (actionType === "right") {
+                    isAnimating = true;
+                    const chosenIndex = currentGenreIndex;
+                    selectedGenre = GENRE_LIST[chosenIndex];
+                    animateSelection("genre-cards", ".select-card", chosenIndex, () => {
+                        isAnimating = false;
+                        changeState(GAME_STATES.DIFFICULTY);
+                    });
+                }
+            }
+            else if (currentState === GAME_STATES.DIFFICULTY) {
+                if (actionType === "left") {
+                    isAnimating = true;
+                    animateSelection("diff-cards", ".select-card", 0, () => {
+                        selectedDifficulty = "E";
+                        isAnimating = false;
+                        questionCount = 0;
+                        lastAnswerSide = "L";
+                        lastAnswerCorrect = true;
+                        changeState(GAME_STATES.PROGRESS);
+                    });
+                } else if (actionType === "right") {
+                    isAnimating = true;
+                    animateSelection("diff-cards", ".select-card", 1, () => {
+                        selectedDifficulty = "H";
+                        isAnimating = false;
+                        questionCount = 0;
+                        lastAnswerSide = "L";
+                        lastAnswerCorrect = true;
+                        changeState(GAME_STATES.PROGRESS);
+                    });
+                }
+            }
+            else if (currentState.startsWith("QUESTION_")) {
+                if (actionType === "left") {
+                    clearQuizTimers();
+                    isAnimating = true;
+                    animateSelection("quiz-options", ".quiz-option-card", 0, () => {
+                        isAnimating = false;
+                        handleAnswerSubmit("A");
+                    });
+                } else if (actionType === "right") {
+                    clearQuizTimers();
+                    isAnimating = true;
+                    animateSelection("quiz-options", ".quiz-option-card", 1, () => {
+                        isAnimating = false;
+                        handleAnswerSubmit("B");
+                    });
+                }
+            }
+            else if (currentState === GAME_STATES.GAMEOVER) {
+                if (isGameOverReady) {
+                    changeState(GAME_STATES.TITLE);
+                }
+            }
+            else if (currentState === GAME_STATES.CLEAR) {
+                changeState(GAME_STATES.TITLE);
+            }
+        }
+
+        // キーボード（マイコン含む）入力監視
+        document.addEventListener("keydown", (e) => {
+            if (e.repeat) return;
             if (e.code === "KeyF" || e.key === "f" || e.key === "F") {
                 e.preventDefault();
                 toggleFullScreen();
                 return;
             }
-            if (isAnimating) return;
-
             if (e.code === "KeyN" || e.key === "n" || e.key === "N") {
                 if (currentState.startsWith("PROGRESS_") || currentState === GAME_STATES.TIMEOUT) {
                     e.preventDefault();
@@ -1075,102 +1154,16 @@
                 }
             }
 
-            const leftPressed = isLeftKey(e);
-            const rightPressed = isRightKey(e);
-            if (!leftPressed && !rightPressed) return;
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            unlockMediaForMobile();
-
-            if (currentState === GAME_STATES.TITLE) {
-                questionCount = 0;
-                changeState(GAME_STATES.GENRE);
+            if (isLeftKey(e)) {
+                e.preventDefault();
+                processAction("left");
+            } else if (isRightKey(e)) {
+                e.preventDefault();
+                processAction("right");
             }
-            else if (currentState === GAME_STATES.GENRE) {
-                if (leftPressed) {
-                    currentGenreIndex = (currentGenreIndex + 1) % GENRE_LIST.length;
-                    updateGenreFocus();
-                } else if (rightPressed) {
-                    isAnimating = true;
-                    const chosenIndex = currentGenreIndex;
-                    selectedGenre = GENRE_LIST[chosenIndex];
-                    animateSelection("genre-cards", ".select-card", chosenIndex, () => {
-                        isAnimating = false;
-                        changeState(GAME_STATES.DIFFICULTY);
-                    });
-                }
-            }
-            else if (currentState === GAME_STATES.DIFFICULTY) {
-                if (leftPressed) {
-                    isAnimating = true;
-                    animateSelection("diff-cards", ".select-card", 0, () => {
-                        selectedDifficulty = "E";
-                        isAnimating = false;
-                        questionCount = 0;
-                        lastAnswerSide = "L";
-                        lastAnswerCorrect = true;
-                        changeState(GAME_STATES.PROGRESS);
-                    });
-                } else if (rightPressed) {
-                    isAnimating = true;
-                    animateSelection("diff-cards", ".select-card", 1, () => {
-                        selectedDifficulty = "H";
-                        isAnimating = false;
-                        questionCount = 0;
-                        lastAnswerSide = "L";
-                        lastAnswerCorrect = true;
-                        changeState(GAME_STATES.PROGRESS);
-                    });
-                }
-            }
-            else if (currentState.startsWith("QUESTION_")) {
-                if (leftPressed) {
-                    clearQuizTimers();
-                    isAnimating = true;
-                    animateSelection("quiz-options", ".quiz-option-card", 0, () => {
-                        isAnimating = false;
-                        handleAnswerSubmit("A");
-                    });
-                } else if (rightPressed) {
-                    clearQuizTimers();
-                    isAnimating = true;
-                    animateSelection("quiz-options", ".quiz-option-card", 1, () => {
-                        isAnimating = false;
-                        handleAnswerSubmit("B");
-                    });
-                }
-            }
-            else if (currentState === GAME_STATES.GAMEOVER) {
-                // 文字が表示されるまでの3秒間は操作を受け付けない
-                if (isGameOverReady) {
-                    changeState(GAME_STATES.TITLE);
-                }
-            }
-            else if (currentState === GAME_STATES.CLEAR) {
-                changeState(GAME_STATES.TITLE);
-            }
-        }
+        }, { capture: true, passive: false });
 
-        window.addEventListener("keydown", handleGameInput, { capture: true, passive: false });
-
-        // 初回画面タップ時にブラウザのフォーカス固定とメディア再生制限解除を実行
-        window.addEventListener("touchstart", () => {
-            window.focus();
-            if (document.body) document.body.focus();
-            unlockMediaForMobile();
-        }, { passive: true });
-
-        window.addEventListener("click", () => {
-            window.focus();
-            if (document.body) document.body.focus();
-            unlockMediaForMobile();
-        });
-       
-        // ==========================================================================
-        // 6. 初期化（DOM読み込み完了時）
-        // ==========================================================================
+        // スマホ画面の直接タッチ（カード・画面タップ）対応の初期化
         window.addEventListener("DOMContentLoaded", () => {
             if (document.body) {
                 document.body.setAttribute("tabindex", "-1");
@@ -1179,6 +1172,43 @@
             preloadMedia();
             fetchQuestions();
             changeState(GAME_STATES.TITLE);
+
+            // 画面全体タップ（タイトル・結果画面等）
+            document.body.addEventListener("pointerdown", (e) => {
+                unlockMediaForMobile();
+                if (currentState === GAME_STATES.TITLE || currentState === GAME_STATES.CLEAR || (currentState === GAME_STATES.GAMEOVER && isGameOverReady)) {
+                    processAction("right");
+                }
+            });
+
+            // ジャンル・難易度・選択肢カードの個別タップ対応
+            const setupCardTouch = (containerId, cardSelector, leftAction, rightAction) => {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                const cards = container.querySelectorAll(cardSelector);
+                cards.forEach((card, idx) => {
+                    card.addEventListener("pointerdown", (e) => {
+                        e.stopPropagation();
+                        unlockMediaForMobile();
+                        if (currentState === GAME_STATES.GENRE) {
+                            currentGenreIndex = idx;
+                            updateGenreFocus();
+                            processAction("right");
+                        } else if (currentState === GAME_STATES.DIFFICULTY) {
+                            if (idx === 0) processAction("left");
+                            else processAction("right");
+                        } else if (currentState.startsWith("QUESTION_")) {
+                            if (idx === 0) processAction("left");
+                            else processAction("right");
+                        }
+                    });
+                });
+            };
+
+            setupCardTouch("genre-cards", ".select-card");
+            setupCardTouch("diff-cards", ".select-card");
+            setupCardTouch("quiz-options", ".quiz-option-card");
+
             const videoElem = document.getElementById("bg-video");
             videoElem.addEventListener("ended", () => {
                 if (currentState.startsWith("PROGRESS_")) {
@@ -1211,7 +1241,7 @@
     </div>
     <div id="ui-title" class="ui-layer hidden">
         <img src="media/TrimmedLogo.png" alt="WANINT" class="title-logo">
-        <p class="start-msg">PRESS BUTTON TO START</p>
+        <p class="start-msg">TAP OR PRESS BUTTON TO START</p>
     </div>
     <div id="ui-genre" class="ui-layer hidden">
         <h2 class="section-title">SELECT GENRE</h2>
@@ -1220,7 +1250,7 @@
             <div class="select-card card-right">VIVANT</div>
             <div class="select-card card-third">雑学</div>
         </div>
-        <p class="key-guide">選択移動 / 決定</p>
+        <p class="key-guide">カードをタップ / マイコン操作</p>
     </div>
     <div id="ui-difficulty" class="ui-layer hidden">
         <h2 class="section-title">SELECT DIFFICULTY</h2>
@@ -1228,7 +1258,7 @@
             <div class="select-card card-left">EASY</div>
             <div class="select-card card-right">HARD</div>
         </div>
-        <p class="key-guide">左を選択 / 右を選択</p>
+        <p class="key-guide">カードをタップ / マイコン操作</p>
     </div>
     <div id="ui-question" class="ui-layer hidden">
         <div class="quiz-container">
@@ -1238,11 +1268,11 @@
             <div id="quiz-countdown" class="quiz-countdown"></div>
             <div id="quiz-options" class="quiz-options-container">
                 <div class="quiz-option-card card-left">
-                    <span class="option-label">A [ SPACE ]</span>
+                    <span class="option-label">A</span>
                     <span id="opt-a-text" class="option-text">A</span>
                 </div>
                 <div class="quiz-option-card card-right">
-                    <span class="option-label">B [ ENTER ]</span>
+                    <span class="option-label">B</span>
                     <span id="opt-b-text" class="option-text">B</span>
                 </div>
             </div>
@@ -1258,7 +1288,7 @@
     </div>
     <div id="ui-gameover" class="ui-layer hidden">
         <h1 class="gameover-title">GAME OVER</h1>
-        <p class="start-msg">PRESS BUTTON TO TITLE</p>
+        <p class="start-msg">TAP TO TITLE</p>
     </div>
     <div id="ui-clear" class="ui-layer hidden">
         <h1 class="clear-title">CLEARED</h1>
