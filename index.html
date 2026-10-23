@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>WANINT</title>
     <style>
         /* ==========================================================================
@@ -10,34 +10,41 @@
            ========================================================================== */
         :root {
             /* 左側カード（A / EASY / 選択肢A）の設定 */
-            --color-left: #065f46; /* 枠線・ラベル文字色 */
-            --bg-left: rgba(236, 253, 245, 0.75); /* 背景色 */
-            --glow-left: rgba(77, 255, 166, 0.8); /* 選択時の発光色 */
+            --color-left: #065f46;
+            --bg-left: rgba(236, 253, 245, 0.75);
+            --glow-left: rgba(77, 255, 166, 0.8);
             /* 右側・中央カード（B / HARD / 選択肢B）の設定 */
-            --color-right: #1d4ed8; /* 枠線・ラベル文字色 */
-            --bg-right: rgba(239, 246, 255, 0.75); /* 背景色 */
-            --glow-right: rgba(77, 166, 255, 0.8); /* 選択時の発光色 */
+            --color-right: #1d4ed8;
+            --bg-right: rgba(239, 246, 255, 0.75);
+            --glow-right: rgba(77, 166, 255, 0.8);
             /* 3つ目のカード（ジャンルC）の設定 */
-            --color-third: #b91c1c; /* 枠線・ラベル文字色 */
-            --bg-third: rgba(254, 242, 242, 0.75); /* 背景色 */
-            --glow-third: rgba(255, 99, 99, 0.8); /* 選択時の発光色 */
+            --color-third: #b91c1c;
+            --bg-third: rgba(254, 242, 242, 0.75);
+            --glow-third: rgba(255, 99, 99, 0.8);
         }
         /* ==========================================================================
-           1. 画面全体の基本スタイル
+           1. 画面全体の基本スタイル（スマホ・iPad最適化）
            ========================================================================== */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
         html, body {
-            -webkit-user-select: none;
-            outline: none;
             margin: 0;
             padding: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             overflow: hidden;
+            overscroll-behavior: none;
+            touch-action: manipulation;
             background-color: #000;
             font-family: sans-serif;
             color: #fff;
             user-select: none;
+            -webkit-user-select: none;
             cursor: none;
+            outline: none;
         }
         /* ==========================================================================
            2. 背景メディア（画像・動画）レイアウト
@@ -48,6 +55,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             z-index: 1;
         }
         .bg-media {
@@ -63,6 +71,7 @@
             display: block;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             object-fit: cover;
         }
         #bg-video {
@@ -74,7 +83,6 @@
             opacity: 1;
         }
         .hidden { display: none !important; }
-
         /* ==========================================================================
            3. UIレイヤー（共通設定）
            ========================================================================== */
@@ -83,11 +91,11 @@
             z-index: 10;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-sizing: border-box;
             padding: 2vh 2vw;
             text-shadow: 0 0.4vh 1.5vh rgba(0, 0, 0, 0.95);
         }
@@ -97,6 +105,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             background-color: #000;
             z-index: 50;
             opacity: 0;
@@ -107,48 +116,6 @@
             opacity: 1;
         }
         .watermark-logo {
-            #correct-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                 z-index: 60;
-                pointer-events: none;
-            }
-            .correct-text {
-                font-size: 24vh;
-                font-weight: 900;
-                font-family: 'Arial Black', Impact, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-                color: #fff200;
-                letter-spacing: 0.12em;
-                padding-left: 0.12em;
-                -webkit-text-stroke: 0.45vh #b30000;
-                text-shadow:
-                    0 0 1.5vh #ff0000,
-                    0 0 3vh #ff6600,
-                    0.6vh 0.6vh 0 #b30000,
-                    -0.6vh -0.6vh 0 #b30000,
-                    0.6vh -0.6vh 0 #b30000,
-                    -0.6vh 0.6vh 0 #b30000,
-                    1vh 1vh 2vh rgba(0, 0, 0, 0.95);
-                transform: scale(0);
-                opacity: 0;
-            }
-            .correct-text.animate-nep {
-                animation: nepCorrect 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            }
-            @keyframes nepCorrect {
-                0% { transform: scale(3.5); opacity: 0; }
-                15% { transform: scale(0.95); opacity: 1; }
-                25% { transform: scale(1.1); opacity: 1; }
-                35% { transform: scale(1.0); opacity: 1; }
-                80% { transform: scale(1.0); opacity: 1; }
-                100% { transform: scale(1.25); opacity: 0; }
-            }
             position: fixed;
             bottom: 0vh;
             right: 0vw;
@@ -158,7 +125,6 @@
             z-index: 30;
             pointer-events: none;
         }
-
         /* --------------------------------------------------------------------------
            ★ ネプリーグ風「正解」演出スタイル
            -------------------------------------------------------------------------- */
@@ -168,6 +134,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
+            height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -175,7 +142,7 @@
             pointer-events: none;
         }
         .correct-text {
-            font-size: 24vh;
+            font-size: min(24vh, 35vw);
             font-weight: 900;
             font-family: 'Arial Black', Impact, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
             color: #fff200;
@@ -197,32 +164,13 @@
             animation: nepCorrect 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         @keyframes nepCorrect {
-            0% {
-                transform: scale(3.5);
-                opacity: 0;
-            }
-            15% {
-                transform: scale(0.95);
-                opacity: 1;
-            }
-            25% {
-                transform: scale(1.1);
-                opacity: 1;
-            }
-            35% {
-                transform: scale(1.0);
-                opacity: 1;
-            }
-            80% {
-                transform: scale(1.0);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1.25);
-                opacity: 0;
-            }
+            0% { transform: scale(3.5); opacity: 0; }
+            15% { transform: scale(0.95); opacity: 1; }
+            25% { transform: scale(1.1); opacity: 1; }
+            35% { transform: scale(1.0); opacity: 1; }
+            80% { transform: scale(1.0); opacity: 1; }
+            100% { transform: scale(1.25); opacity: 0; }
         }
-
         /* --------------------------------------------------------------------------
            3-1. タイトル画面
            -------------------------------------------------------------------------- */
@@ -233,7 +181,7 @@
             margin-bottom: 4vh;
         }
         .start-msg {
-            font-size: 4vh;
+            font-size: min(4vh, 6vw);
             font-weight: bold;
             animation: blink 1.5s infinite;
         }
@@ -254,41 +202,38 @@
            3-2. 選択画面（ジャンル / 難易度）
            -------------------------------------------------------------------------- */
         .section-title {
-            font-size: 9vh;
+            font-size: min(9vh, 10vw);
             margin-bottom: 5vh;
             letter-spacing: 0.05em;
             font-weight: bold;
+            text-align: center;
         }
         .card-container {
             display: flex;
             gap: 3.5vw;
             justify-content: center;
             align-items: center;
-            max-width: 92vw;
+            max-width: 94vw;
         }
         .select-card {
-            width: 45vh;
-            height: 45vh;
-            max-width: 40vw;
-            max-height: 40vw;
+            width: min(45vh, 42vw);
+            height: min(45vh, 42vw);
             background: rgba(0, 0, 0, 0.65);
             border: 0.8vh solid #fff;
             border-radius: 3vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 8vh;/*これ？ */
+            font-size: min(10vh, 9vw);
             font-weight: bold;
             box-shadow: 0 2vh 2.5vh rgba(0, 0, 0, 0.9);
-            box-sizing: border-box;
             transition: transform 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
         }
         /* ジャンル選択画面（3枚並び）用のサイズ調整とフォーカス演出 */
         #genre-cards .select-card {
-            width: 40vh;
-            height: 40vh;
-            max-width: 26vw;
-            max-height: 26vw;
+            width: min(40vh, 28vw);
+            height: min(40vh, 28vw);
+            font-size: min(8vh, 6.5vw);
             opacity: 0.45;
             transform: scale(0.9);
         }
@@ -308,7 +253,7 @@
         }
         .key-guide {
             margin-top: 5vh;
-            font-size: 3vh;
+            font-size: min(3vh, 4.5vw);
             font-weight: bold;
             color: #eee;
         }
@@ -323,17 +268,16 @@
             justify-content: space-between;
             align-items: center;
             padding: 5vh 5vw;
-            box-sizing: border-box;
             position: relative;
         }
         .quiz-question-box {
             background: rgba(0, 0, 0, 0.75);
             border: 0.5vh solid #fff;
             border-radius: 2vh;
-            width: 80vw;
+            width: 85vw;
             padding: 3vh;
             text-align: center;
-            font-size: 5vh;
+            font-size: min(5vh, 5.5vw);
             font-weight: bold;
             line-height: 1.4;
             box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.8);
@@ -347,7 +291,7 @@
             100% { opacity: 1; transform: scale(1); }
         }
         .quiz-countdown {
-            font-size: 14vh;
+            font-size: min(14vh, 22vw);
             font-weight: 900;
             color: #ff3333;
             text-shadow: 0 0 2vh rgba(255, 0, 0, 0.9), 0 0 4vh rgba(0, 0, 0, 1);
@@ -380,8 +324,8 @@
             100% { opacity: 1; transform: translateY(0); }
         }
         .quiz-option-card {
-            width: 38vw;
-            min-height: 25vh;
+            width: 39vw;
+            min-height: 24vh;
             background: rgba(0, 0, 0, 0.75);
             border: 0.6vh solid #aaa;
             border-radius: 2vh;
@@ -390,15 +334,14 @@
             justify-content: center;
             align-items: center;
             padding: 2vh;
-            box-sizing: border-box;
         }
         .option-label {
-            font-size: 5vh;
+            font-size: min(4vh, 4.5vw);
             font-weight: bold;
             margin-bottom: 1vh;
         }
         .option-text {
-            font-size: 6vh;
+            font-size: min(4.5vh, 5vw);
             font-weight: bold;
             text-align: center;
             width: 100%;
@@ -408,11 +351,13 @@
         }
         .option-img {
             max-width: 100%;
-            max-height: 23vh;
+            max-height: 18vh;
             object-fit: contain;
             border-radius: 1vh;
         }
-        /* 各カードのカラー適用クラス */
+        /* ==========================================================================
+           ★ 各カードのカラー適用クラス
+           ========================================================================== */
         .card-left {
             border-color: var(--color-left) !important;
             background-color: var(--bg-left) !important;
@@ -461,7 +406,6 @@
             font-weight: 900;
             font-family: 'Arial Black', Impact, sans-serif;
             border-radius: 0.3vh;
-            box-sizing: border-box;
             background: #25272c;
             color: #d6e828;
             box-shadow: inset 0.3vh 0.3vh 0.6vh rgba(0, 0, 0, 0.95);
@@ -474,18 +418,20 @@
             text-shadow: none;
         }
         .gameover-title {
-            font-size: 13vh;
+            font-size: min(13vh, 15vw);
             color: #ff3333;
             margin-bottom: 4vh;
             letter-spacing: 0.08em;
             font-weight: 900;
+            text-align: center;
         }
         .clear-title {
-            font-size: 13vh;
+            font-size: min(13vh, 15vw);
             color: #ffd700;
             margin-bottom: 4vh;
             letter-spacing: 0.08em;
             font-weight: 900;
+            text-align: center;
         }
     </style>
     <script>
@@ -518,8 +464,6 @@
         };
        
         const MEDIA_PATHS = {
-            const correctAudio = new Audio("media/correct.mp3");
-            correctAudio.preload = "auto";
             [GAME_STATES.TITLE]:       { video: "media/bg-title.mp4", poster: "media/bg-title.JPG", loop: true },
             [GAME_STATES.GENRE]:       { video: "media/bg-title.mp4", poster: "media/bg-title.JPG", loop: true },
             [GAME_STATES.DIFFICULTY]:  { video: "media/bg-title.mp4", poster: "media/bg-title.JPG", loop: true },
@@ -590,19 +534,19 @@
         };
 
         const correctAudio = new Audio("media/correct.mp3");
+        correctAudio.preload = "auto";
        
         // ==========================================================================
         // 2. グローバル変数（システム状態管理）
         // ==========================================================================
-        let isAudioUnlocked = false;
-        let correctOverlayTimerId = null;
-        let correctDelayTimerId = null;
         let currentState = GAME_STATES.TITLE;
         let currentMediaVideo = null;
         let isAnimating = false;
         let isGameOverReady = false;
+        let isAudioUnlocked = false;
         let gameOverTimerId = null;
         let correctOverlayTimerId = null;
+        let correctDelayTimerId = null;
         let currentGenreIndex = 0;
         let selectedGenre = "";
         let selectedDifficulty = "";
@@ -614,9 +558,9 @@
         let quizTimerIds = [];
 
         // ==========================================================================
-        // 3. ユーティリティ・システム制御関数
+        // 3. ユーティリティ・スマホ/iPad制限突破関数
         // ==========================================================================
-        function unlockMediaForIOS() {
+        function unlockMediaForMobile() {
             if (!isAudioUnlocked) {
                 correctAudio.muted = true;
                 correctAudio.play().then(() => {
@@ -634,21 +578,26 @@
             }
         }
 
+        // マイコン（1 / ArrowLeft / Space）の左ボタン判定
         function isLeftKey(e) {
             return (
-                e.code === "Space" || e.code === "ArrowLeft" || e.code === "Digit1" ||
-                e.key === " " || e.key === "ArrowLeft" || e.key === "1" ||
-                e.keyCode === 32 || e.keyCode === 37 || e.keyCode === 49
+                e.code === "Digit1" || e.code === "Numpad1" ||
+                e.code === "ArrowLeft" || e.code === "Space" ||
+                e.key === "1" || e.key === "！" || e.key === "ArrowLeft" || e.key === " " ||
+                e.keyCode === 49 || e.keyCode === 37 || e.keyCode === 32
             );
         }
 
+        // マイコン（2 / ArrowRight / Enter）の右ボタン判定
         function isRightKey(e) {
             return (
-                e.code === "Enter" || e.code === "NumpadEnter" || e.code === "ArrowRight" || e.code === "Digit2" ||
-                e.key === "Enter" || e.key === "ArrowRight" || e.key === "2" ||
-                e.keyCode === 13 || e.keyCode === 39 || e.keyCode === 50
+                e.code === "Digit2" || e.code === "Numpad2" ||
+                e.code === "ArrowRight" || e.code === "Enter" || e.code === "NumpadEnter" ||
+                e.key === "2" || e.key === "”" || e.key === "\"" || e.key === "ArrowRight" || e.key === "Enter" ||
+                e.keyCode === 50 || e.keyCode === 39 || e.keyCode === 13
             );
         }
+
         function toggleFullScreen() {
             if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
                 const elem = document.documentElement;
@@ -799,15 +748,12 @@
             if (!overlay || !textElem) return;
 
             try {
+                correctAudio.muted = false;
                 correctAudio.currentTime = 0;
                 correctAudio.play().catch(() => {});
-            } catch (err) {
-                console.error("正解音の再生に失敗:", err);
-            }
+            } catch (err) {}
 
-            if (correctOverlayTimerId) {
-                clearTimeout(correctOverlayTimerId);
-            }
+            if (correctOverlayTimerId) clearTimeout(correctOverlayTimerId);
 
             overlay.classList.remove("hidden");
             textElem.classList.remove("animate-nep");
@@ -845,16 +791,6 @@
         }
        
         function clearQuizTimers() {
-            const overlay = document.getElementById("correct-overlay");
-            if (overlay) overlay.classList.add("hidden");
-            if (correctOverlayTimerId) {
-                clearTimeout(correctOverlayTimerId);
-                correctOverlayTimerId = null;
-            }
-            if (correctDelayTimerId) {
-                clearTimeout(correctDelayTimerId);
-                correctDelayTimerId = null;
-            }
             quizTimerIds.forEach(id => clearTimeout(id));
             quizTimerIds = [];
             const countElem = document.getElementById("quiz-countdown");
@@ -867,12 +803,14 @@
                 curtain.classList.remove("active");
             }
             const overlay = document.getElementById("correct-overlay");
-            if (overlay) {
-                overlay.classList.add("hidden");
-            }
+            if (overlay) overlay.classList.add("hidden");
             if (correctOverlayTimerId) {
                 clearTimeout(correctOverlayTimerId);
                 correctOverlayTimerId = null;
+            }
+            if (correctDelayTimerId) {
+                clearTimeout(correctDelayTimerId);
+                correctDelayTimerId = null;
             }
         }
        
@@ -934,7 +872,6 @@
                 highlightColor = getComputedStyle(document.documentElement).getPropertyValue('--color-third').trim();
                 glowColor = getComputedStyle(document.documentElement).getPropertyValue('--glow-third').trim();
             }
-
             cards.forEach((card, idx) => {
                 if (idx !== selectedIndex) {
                     card.style.transition = "opacity 0.4s ease, transform 0.4s ease";
@@ -1051,7 +988,6 @@
             currentState = targetState;
             document.querySelectorAll(".ui-layer").forEach(elem => elem.classList.add("hidden"));
             playMedia(targetState);
-
             const watermark = document.getElementById("watermark-logo");
             if (watermark) {
                 if (targetState === GAME_STATES.TITLE) {
@@ -1060,7 +996,6 @@
                     watermark.classList.remove("hidden");
                 }
             }
-
             if (targetState === GAME_STATES.TITLE) {
                 fetchQuestions();
                 document.getElementById("ui-title").classList.remove("hidden");
@@ -1075,16 +1010,15 @@
                 document.getElementById("ui-question").classList.remove("hidden");
                 triggerQuizSequence();
             } else if (targetState.startsWith("PROGRESS_") && targetState !== GAME_STATES.PROGRESS_0) {
-                // 正解ステート時にネプリーグ風テロップと音声を再生
                 if (lastAnswerCorrect) {
-                    setTimeout(() => {
-                        // 状態がまだPROGRESSのままであることを確認して発火
+                    correctDelayTimerId = setTimeout(() => {
                         if (currentState.startsWith("PROGRESS_")) {
                             showCorrectEffect();
                         }
-                    }, 5000);
+                    }, 1200);
                 }
             } else if (targetState === GAME_STATES.GAMEOVER) {
+                // 映像は即座に再生開始し、文字UIの表示のみ3秒遅延させる
                 gameOverTimerId = setTimeout(() => {
                     const goUi = document.getElementById("ui-gameover");
                     if (goUi && currentState === GAME_STATES.GAMEOVER) {
@@ -1113,17 +1047,18 @@
         }
        
         // ==========================================================================
-        // 5. イベントリスナー（キーボード入力制御）
+        // 5. イベントリスナー（マイコン入力＆スマホ/iPad音声ロック解除）
         // ==========================================================================
-        document.addEventListener("keydown", (e) => {
+        function handleGameInput(e) {
+            if (e.repeat) return;
+
             if (e.code === "KeyF" || e.key === "f" || e.key === "F") {
                 e.preventDefault();
                 toggleFullScreen();
                 return;
             }
-            if (isAnimating) {
-                return;
-            }
+            if (isAnimating) return;
+
             if (e.code === "KeyN" || e.key === "n" || e.key === "N") {
                 if (currentState.startsWith("PROGRESS_") || currentState === GAME_STATES.TIMEOUT) {
                     e.preventDefault();
@@ -1139,26 +1074,25 @@
                     return;
                 }
             }
-            if (e.code === "Space" || e.code === "Enter") {
-                e.preventDefault();
-            } else {
-                return;
-            }
-            const videoElem = document.getElementById("bg-video");
-            if (videoElem.paused && currentMediaVideo) {
-                videoElem.play().then(() => videoElem.classList.add("active")).catch(() => {});
-            }
+
+            const leftPressed = isLeftKey(e);
+            const rightPressed = isRightKey(e);
+            if (!leftPressed && !rightPressed) return;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            unlockMediaForMobile();
+
             if (currentState === GAME_STATES.TITLE) {
-                if (e.code === "Enter" || e.code === "Space") {
-                    questionCount = 0;
-                    changeState(GAME_STATES.GENRE);
-                }
+                questionCount = 0;
+                changeState(GAME_STATES.GENRE);
             }
             else if (currentState === GAME_STATES.GENRE) {
-                if (e.code === "Space") {
+                if (leftPressed) {
                     currentGenreIndex = (currentGenreIndex + 1) % GENRE_LIST.length;
                     updateGenreFocus();
-                } else if (e.code === "Enter") {
+                } else if (rightPressed) {
                     isAnimating = true;
                     const chosenIndex = currentGenreIndex;
                     selectedGenre = GENRE_LIST[chosenIndex];
@@ -1169,7 +1103,7 @@
                 }
             }
             else if (currentState === GAME_STATES.DIFFICULTY) {
-                if (e.code === "Space") {
+                if (leftPressed) {
                     isAnimating = true;
                     animateSelection("diff-cards", ".select-card", 0, () => {
                         selectedDifficulty = "E";
@@ -1179,7 +1113,7 @@
                         lastAnswerCorrect = true;
                         changeState(GAME_STATES.PROGRESS);
                     });
-                } else if (e.code === "Enter") {
+                } else if (rightPressed) {
                     isAnimating = true;
                     animateSelection("diff-cards", ".select-card", 1, () => {
                         selectedDifficulty = "H";
@@ -1192,14 +1126,14 @@
                 }
             }
             else if (currentState.startsWith("QUESTION_")) {
-                if (e.code === "Space") {
+                if (leftPressed) {
                     clearQuizTimers();
                     isAnimating = true;
                     animateSelection("quiz-options", ".quiz-option-card", 0, () => {
                         isAnimating = false;
                         handleAnswerSubmit("A");
                     });
-                } else if (e.code === "Enter") {
+                } else if (rightPressed) {
                     clearQuizTimers();
                     isAnimating = true;
                     animateSelection("quiz-options", ".quiz-option-card", 1, () => {
@@ -1209,21 +1143,39 @@
                 }
             }
             else if (currentState === GAME_STATES.GAMEOVER) {
-                if (isGameOverReady && (e.code === "Enter" || e.code === "Space")) {
+                // 文字が表示されるまでの3秒間は操作を受け付けない
+                if (isGameOverReady) {
                     changeState(GAME_STATES.TITLE);
                 }
             }
             else if (currentState === GAME_STATES.CLEAR) {
-                if (e.code === "Enter" || e.code === "Space") {
-                    changeState(GAME_STATES.TITLE);
-                }
+                changeState(GAME_STATES.TITLE);
             }
+        }
+
+        window.addEventListener("keydown", handleGameInput, { capture: true, passive: false });
+
+        // 初回画面タップ時にブラウザのフォーカス固定とメディア再生制限解除を実行
+        window.addEventListener("touchstart", () => {
+            window.focus();
+            if (document.body) document.body.focus();
+            unlockMediaForMobile();
+        }, { passive: true });
+
+        window.addEventListener("click", () => {
+            window.focus();
+            if (document.body) document.body.focus();
+            unlockMediaForMobile();
         });
        
         // ==========================================================================
         // 6. 初期化（DOM読み込み完了時）
         // ==========================================================================
         window.addEventListener("DOMContentLoaded", () => {
+            if (document.body) {
+                document.body.setAttribute("tabindex", "-1");
+                document.body.focus();
+            }
             preloadMedia();
             fetchQuestions();
             changeState(GAME_STATES.TITLE);
@@ -1244,7 +1196,7 @@
         });
     </script>
 </head>
-<body>
+<body tabindex="-1">
     <!-- 暗転用黒カーテンオーバーレイ -->
     <div id="black-curtain"></div>
     <!-- ネプリーグ風正解テロップオーバーレイ -->
@@ -1286,11 +1238,11 @@
             <div id="quiz-countdown" class="quiz-countdown"></div>
             <div id="quiz-options" class="quiz-options-container">
                 <div class="quiz-option-card card-left">
-                    <span class="option-label">A</span>
+                    <span class="option-label">A [ SPACE ]</span>
                     <span id="opt-a-text" class="option-text">A</span>
                 </div>
                 <div class="quiz-option-card card-right">
-                    <span class="option-label">B</span>
+                    <span class="option-label">B [ ENTER ]</span>
                     <span id="opt-b-text" class="option-text">B</span>
                 </div>
             </div>
